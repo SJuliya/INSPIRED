@@ -21,11 +21,13 @@
     line-height: 17px;
     color: $main-color;
     margin-bottom: 13px;
+    min-height: 34px;
 
     @include tablet {
       margin-bottom: 5px;
       font-size: 12px;
       line-height: 15px;
+      min-height: 30px;
     }
   }
 

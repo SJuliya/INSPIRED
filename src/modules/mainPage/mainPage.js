@@ -3,7 +3,7 @@ import {renderHero} from "../render/renderHero.js";
 import {renderProducts} from "../render/renderProducts.js";
 
 export const mainPage = (gender = 'women') => {
-    renderNavigation();
-    renderHero();
-    renderProducts();
+    renderNavigation(gender);
+    renderHero(gender);
+    renderProducts(gender);
 }

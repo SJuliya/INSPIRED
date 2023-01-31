@@ -1,12 +1,15 @@
 import {getData} from "../getData";
-import {API_URL, DATA} from "../const";
+import {API_URL, COUNT_PAGINATION, DATA} from "../const";
 import {createElement} from "../createElement";
+import {renderPagination} from "./renderPagination";
 
-export const renderProducts = async (title, param) => {
+export const renderProducts = async (title, params) => {
     const products = document.querySelector('.goods');
     products.textContent = '';
 
-    const goods = await getData(`${API_URL}/api/goods`, param);
+    const data = await getData(`${API_URL}/api/goods`, params);
+
+    const goods = Array.isArray(data) ? data : data.goods;
 
     const container = createElement('div', {
         className: 'container'
@@ -45,7 +48,7 @@ export const renderProducts = async (title, param) => {
             parent: li
         });
 
-        const colors = createElement('ul', {
+        createElement('ul', {
             className: 'product__color-list'
         }, {
             parent: article,
@@ -60,10 +63,19 @@ export const renderProducts = async (title, param) => {
         return li;
     });
 
-    const list = createElement('ul', {
+    createElement('ul', {
         className: 'goods__list'
     }, {
         appends: listCard,
         parent: container
-    })
+    });
+
+    if (data.pages && data.pages > 1) {
+        const pagination = createElement('div', {
+            className: 'goods__pagination pagination'
+        }, {
+            parent: container
+        });
+        renderPagination(pagination, data.page, data.pages, COUNT_PAGINATION);
+    }
 }

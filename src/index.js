@@ -1,41 +1,55 @@
 import './index.html';
 import './index.scss';
-import {router} from "./modules/router";
+import {router} from "./modules/utils/router";
 import {renderHeader} from "./modules/render/renderHeader";
 import {renderFooter} from "./modules/render/renderFooter";
-import {mainPage} from "./modules/mainPage/mainPage";
-import {womanMainPage} from "./modules/mainPage/womenMainPage";
-import {manMainPage} from "./modules/mainPage/menMainPage";
+import {mainPageController} from "./modules/controllers/mainPageController";
 import {getData} from "./modules/getData";
 import {API_URL, DATA} from "./modules/const";
 import {createCssColors} from "./modules/createCssColors";
+import {createElement} from "./modules/utils/createElement";
+import {categoryPageController} from "./modules/controllers/categoryPageController";
+import {searchPageController} from "./modules/controllers/searchController";
 
 const init = async () => {
-    DATA.navigation = await getData(`${API_URL}/api/categories`);
-    DATA.colors = await getData(`${API_URL}/api/colors`)
+    try {
+        router.on('*', () => {
+            renderHeader();
+            renderFooter();
+        });
 
-    createCssColors(DATA.colors);
+        DATA.navigation = await getData(`${API_URL}/api/categories`);
+        DATA.colors = await getData(`${API_URL}/api/colors`)
 
-    router.on('*', () => {
-        renderHeader();
-        renderFooter();
-    });
+        createCssColors(DATA.colors);
 
-    router.on('/', () => {
-        mainPage();
-    });
+        router.on('/', () => {
+            mainPageController();
+        });
 
-    router.on('women', () => {
-        womanMainPage();
-    });
+        router.on('women', () => {
+            mainPageController('women');
+        });
 
-    router.on('men', () => {
-        manMainPage();
-    });
+        router.on('men', () => {
+            mainPageController('men');
+        });
 
-    router.resolve();
+        router.on('/:gender/:category', categoryPageController);
+
+        router.on('search', searchPageController);
+    } catch(e) {
+        createElement('h2', {
+            textContent: 'Что-то пошло не так, попробуйте позже...'
+        }, {
+            parent: document.querySelector('main'),
+            cb(h2) {
+                h2.style.textAlign = 'center'
+            }
+        })
+    } finally {
+        router.resolve();
+    }
 }
 
 init();
-
-

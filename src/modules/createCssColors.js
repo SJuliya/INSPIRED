@@ -8,7 +8,7 @@ export const createCssColors = (colors) => {
         .color_${color.title}:after {
             background-color: ${color.code};
             ${color.title === 'white' ? 'border: 0.4px solid #8A8A8A;' : ''}
-        `
+        }`
     })
 
     document.head.append(style);

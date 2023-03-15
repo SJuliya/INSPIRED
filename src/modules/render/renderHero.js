@@ -1,5 +1,5 @@
 import {createElement} from "../utils/createElement";
-import {TITLE} from "../const";
+import {TITLE, hero} from "../const";
 
 const container = createElement('div', {
     className: 'container'
@@ -25,8 +25,6 @@ const heroLink = createElement('a', {
 })
 
 export const renderHero = (gender) => {
-    const hero = document.querySelector('.hero');
-
     if(!gender) {
         hero.style.display = 'none';
         return;

@@ -1,4 +1,5 @@
 .card {
+  display: none;
   margin-bottom: 100px;
 
   &__container {
@@ -80,6 +81,18 @@
     }
   }
 
+  &__color {
+    margin-bottom: 24px;
+
+    @include tablet {
+      margin-bottom: 16px;
+    }
+
+    @include mobile {
+      margin-bottom: 12px;
+    }
+  }
+
   &__subtitle {
     font-size: 12px;
     font-weight: 400;
@@ -89,7 +102,7 @@
     @include tablet {
       font-size: 10px;
       line-height: 12px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     @include mobile {
@@ -110,18 +123,6 @@
     }
   }
 
-  &__color {
-    margin-bottom: 24px;
-
-    @include tablet {
-      margin-bottom: 16px;
-    }
-
-    @include mobile {
-      margin-bottom: 12px;
-    }
-  }
-
   &__color-title {
     margin-bottom: 8px;
   }
@@ -133,6 +134,13 @@
 
   &__color-item {
     cursor: pointer;
+    width: 24px;
+    height: 24px;
+
+    &:after {
+      width: 16px;
+      height: 16px;
+    }
   }
 
   &__size {
@@ -160,10 +168,12 @@
   }
 
   &__size-item {
-    display: block;
-    padding: 3px 14px;
-    border: 0.5px solid $main-color;
     cursor: pointer;
+
+    &_active {
+      background-color: $main-color;
+      color: $second-color;
+    }
   }
 
   &__description {
@@ -210,21 +220,9 @@
   }
 
   &__add-cart {
-    width: 164px;
-    height: 46px;
-    background-color: $main-color;
-    color: $second-color;
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 17px;
-    text-transform: uppercase;
     margin-right: 16px;
 
     @include tablet {
-      width: 141px;
-      height: 36px;
-      font-size: 10px;
-      line-height: 12px;
       margin-right: 8px;
     }
   }

@@ -2,6 +2,7 @@ import {router} from "../utils/router";
 import {renderNavigation} from "../render/renderNavigation";
 import {renderHero} from "../render/renderHero";
 import {renderProducts} from "../render/renderProducts";
+import {renderCard} from "../render/renderCard";
 
 export const searchController = formSearch => {
     formSearch.addEventListener('submit', (e) => {
@@ -22,5 +23,6 @@ export const searchPageController = (routerData) => {
 
     renderNavigation('all');
     renderHero(false);
+    renderCard(false);
     renderProducts(routerData.params.value, params);
 }

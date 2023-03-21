@@ -2,6 +2,7 @@ import {renderNavigation} from "../render/renderNavigation";
 import {renderHero} from "../render/renderHero";
 import {renderProducts} from "../render/renderProducts";
 import {products} from "../const";
+import {renderCard} from "../render/renderCard";
 
 export const getFavorite = () =>
     JSON.parse(localStorage.getItem('favorite') || '[]');
@@ -23,7 +24,7 @@ const removeFavorite = (id) => {
     localStorage.setItem('favorite', JSON.stringify(favoriteList));
 }
 
-products.addEventListener('click', (e) => {
+export const handlerFavorite = (e) => {
     const target = e.target;
 
     if (target.closest('.favorite_active')) {
@@ -39,11 +40,14 @@ products.addEventListener('click', (e) => {
         console.log("-> getFavorite", getFavorite());
         return;
     }
-})
+}
+
+products.addEventListener('click', handlerFavorite);
 
 export const favoriteController = () => {
     renderNavigation('all');
     renderHero(false);
+    renderCard(false);
     renderProducts('Избранное', {list: getFavorite()});
 
 }

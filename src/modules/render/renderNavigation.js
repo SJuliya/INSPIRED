@@ -3,21 +3,24 @@ import {DATA, navigation} from "../const";
 
 let flag = false;
 let oldGender = 'woman';
+let oldCategory = '';
 
-export const renderNavigation = (gender, category) => {
-    if (!gender) {
+export const renderNavigation = ({gender, category, render, repeatRender}) => {
+    if (!render) {
         navigation.style.display = 'none';
+        return;
     } else {
         navigation.style.display = '';
     }
 
-    if (flag && oldGender === gender) return;
+    if (flag && oldGender === gender && oldGender === category) return;
 
-    if (gender === 'all') {
+    if (repeatRender) {
         gender = oldGender;
     }
 
     oldGender = gender;
+    oldCategory = category;
     flag = true;
 
     navigation.textContent = '';

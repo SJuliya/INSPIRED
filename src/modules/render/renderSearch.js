@@ -1,6 +1,5 @@
 import {createElement} from "../utils/createElement";
 import {searchController} from "../controllers/searchController";
-import {remove} from "resolve-url-loader/lib/file-protocol";
 
 export const search = createElement('div', {
     className: 'search',

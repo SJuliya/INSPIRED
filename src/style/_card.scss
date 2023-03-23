@@ -39,6 +39,7 @@
 
   &__content {
     max-width: 335px;
+    scroll-margin-top: 20px;
 
     @include tablet {
       max-width: 300px;
@@ -128,6 +129,7 @@
 
   &__color-list {
     display: flex;
+    flex-wrap: wrap;
     gap: 6px;
   }
 
@@ -160,6 +162,7 @@
 
   &__size-list {
     display: flex;
+    flex-wrap: wrap;
     gap: 4px;
     font-size: 14px;
     line-height: 17px;

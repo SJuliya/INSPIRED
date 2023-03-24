@@ -35,21 +35,19 @@ export const renderCard = ({data, render}) => {
         cb(elem) {
             elem.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const {color, size, count} = elem;
+                const formData = new FormData(elem);
+                const product = Object.fromEntries(formData);
 
-                if (color.value && size.value && count.value) {
-                    const formData = new FormData(elem);
-                    const product = JSON.stringify(Object.fromEntries(formData));
+                if (product.color && product.size && product.count) {
                     addProductCart(product);
-
                     return;
                 }
 
                 const p = createElement('p', {
                     className: 'card__alert',
-                    textContent: size.value
-                        ? color.value
-                            ? count.value
+                    textContent: product.size
+                        ? product.color
+                            ? product.count
                                 ? 'Что-то пошло не так'
                                 : 'Количество не указано'
                             : 'Цвет не выбран'
@@ -65,7 +63,6 @@ export const renderCard = ({data, render}) => {
             });
         }
     });
-
 
     form.insertAdjacentHTML('beforeend', `
     <h2 class="card__title">${title}</h2>
@@ -165,7 +162,7 @@ export const renderCard = ({data, render}) => {
       </div>
     `);
 
-    const count = renderCount();
+    const count = renderCount(1, 'card__count');
 
     const addCart = createElement('button', {
         className: 'card__add-cart main-button',
@@ -190,11 +187,3 @@ export const renderCard = ({data, render}) => {
         parent: form, appends: [count, addCart, favoriteBtn],
     });
 };
-/*      <button class="card__add-cart main-button" type="submit">В корзину</button>
-        <button class="card__favorite favorite" aria-label="Добавить в избранное" type="button" data-id="321654"></button>
-      </div>
-
-      <button type="submit"></button>
-    </form>
-  </div>
-*/

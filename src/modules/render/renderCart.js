@@ -1,4 +1,8 @@
-import {cart} from "../const";
+import {API_URL, cart} from "../const";
+import {createElement} from "../utils/createElement";
+import {addProductCart, getCart, removeCart} from "../controllers/cartController";
+import {getData} from "../getData";
+import {renderCount} from "./renderCount";
 
 export const renderCart = ({render}) => {
     cart.textContent = '';
@@ -6,89 +10,103 @@ export const renderCart = ({render}) => {
     if (!render) {
         return;
     }
-}/*<div className="container">
-    <h2 className="cart__title">Корзина</h2>
 
-    <ul className="cart__list">
-        <li className="cart__item">
-            <article className="item">
-                <img className="item__image" src="img/card-img.jpg" alt="Пижама со штанами шелковая">
+    const container = createElement('div', {
+        className: 'container',
+        innerHTML: '<h2 class="cart__title">Корзина</h2>',
+    }, {
+        parent: cart
+    });
 
-                    <div className="item__content">
-                        <h3 className="item__title">Пижама со штанами шелковая</h3>
+    const cartList = createElement('ul', {
+        className: 'cart__list',
+    }, {
+        parent: container,
+    });
 
-                        <p className="item__price">руб 6999</p>
+    getCart().forEach(async product => {
+        const data = await getData(`${API_URL}/api/goods/${product.id}`);
 
-                        <div className="item__vendor-code">
-                            <span className="item__subtitle">Артикул</span>
-                            <span className="item__id">089083</span>
-                        </div>
-                    </div>
+        const li = createElement('li', {
+            className: 'cart__item',
+        }, {
+            parent:cartList,
+        });
 
-                    <div className="item__prop">
-                        <div className="item__color">
-                            <p className="item__subtitle item__color-title">Цвет</p>
-                            <div className="item__color-item color color_black color_check"></div>
-                        </div>
+        const article = createElement('article', {
+            className: 'item'
+        }, {
+            parent: li,
+        })
 
-                        <div className="item__size">
-                            <p className="item__subtitle item__size-title">Размер</p>
-                            <div className="item__size-item size">XS</div>
-                        </div>
-                    </div>
+        article.insertAdjacentHTML('beforeend', `
+            <img class="item__image" src="${API_URL}/${data.pic}" alt="${data.title}">
 
-                    <button className="item__del" aria-label="Удалить товар из корзины"></button>
+            <div class="item__content">
+                <h3 class="item__title">${data.title}</h3>
 
-                    <div className="count item__count">
-                        <button className="count__item count__minus">-</button>
-                        <span className="count__item count__number">1</span>
-                        <button className="count__item count__plus">+</button>
-                        <input type="hidden" name="count" value="1">
-                    </div>
-            </article>
-        </li>
+                <p class="item__price">руб ${data.price}</p>
 
-        <li className="cart__item">
-            <article className="item">
-                <img className="item__image" src="img/cart-img.jpg" alt="Бюстгальтер-Балконет Prague Full Cover">
+                <div class="item__vendor-code">
+                    <span class="item__subtitle">Артикул</span>
+                    <span class="item__id">${data.id}</span>
+                </div>
+            </div>
 
-                    <div className="item__content">
-                        <h3 className="item__title">Бюстгальтер-Балконет Prague Full Cover</h3>
+            <div class="item__prop">
+                <div class="item__color">
+                    <p class="item__subtitle item__color-title">Цвет</p>
+                    <div class="item__color-item color color_${product.color} color_check"></div>
+                </div>
 
-                        <p className="item__price">руб 2599</p>
+                <div class="item__size">
+                    <p class="item__subtitle item__size-title">Размер</p>
+                    <div class="item__size-item size">${product.size}</div>
+                </div>
+            </div>
+        `);
 
-                        <div className="item__vendor-code">
-                            <span className="item__subtitle">Артикул</span>
-                            <span className="item__id">084375</span>
-                        </div>
-                    </div>
+        createElement('button', {
+            className: 'item__del',
+            ariaLabel: 'Удалить товар из корзины',
+        }, {
+            parent: article,
+            cb(btn) {
+                btn.addEventListener('click', () => {
+                     const isRemove = removeCart(product);
+                     if (isRemove) {
+                         li.remove();
+                     }
+                })
+            }
+        });
 
-                    <div className="item__prop">
-                        <div className="item__color">
-                            <p className="item__subtitle item__color-title">Цвет</p>
-                            <div className="item__color-item color color_black color_check"></div>
-                        </div>
+        const countBlock = renderCount(product.count, 'item__count', count => {
+            product.count = count;
+            addProductCart(product, true);
+        });
 
-                        <div className="item__size">
-                            <p className="item__subtitle item__size-title">Размер</p>
-                            <div className="item__size-item size">M</div>
-                        </div>
-                    </div>
+        article.insertAdjacentElement('beforeend', countBlock);
+    });
 
-                    <button className="item__del" aria-label="Удалить товар из корзины"></button>
+    const cartTotal = createElement('div', {
+        className: 'cart__total',
+        innerHTML: '<p class="cart__total-title">Итого:</p>',
+    }, {
+        parent: container
+    });
 
-                    <div className="count item__count">
-                        <button className="count__item count__minus">-</button>
-                        <span className="count__item count__number">1</span>
-                        <button className="count__item count__plus">+</button>
-                        <input type="hidden" name="count" value="1">
-                    </div>
-            </article>
-        </li>
-    </ul>
+    const totalPrice = createElement('p', {
+        className: 'cart__total-price',
+        textContent: 'руб 0'
+    }, {
+        parent: cartTotal,
+    });
+}/*     <button class="item__del" aria-label="Удалить товар из корзины"></button>
 
-    <div className="cart__total">
-        <p className="cart__total-title">Итого:</p>
-        <p className="cart__total-price">руб 9598</p>
-    </div>
-</div>*/
+        <div class="count item__count">
+            <button class="count__item count__minus">-</button>
+            <span class="count__item count__number">1</span>
+            <button class="count__item count__plus">+</button>
+            <input type="hidden" name="count" value="1">
+        </div>*/

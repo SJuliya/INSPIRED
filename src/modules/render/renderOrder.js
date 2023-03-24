@@ -1,4 +1,5 @@
 import {order} from "../const";
+import {createElement} from "../utils/createElement";
 
 export const renderOrder = ({render}) => {
     order.textContent = '';
@@ -6,41 +7,54 @@ export const renderOrder = ({render}) => {
     if (!render) {
         return;
     }
-}/*
-<div className="container">
-    <h2 className="order__title">Оформление заказа</h2>
 
-    <form className="order__form">
-        <fieldset className="order__personal">
-            <label className="order__label">
-                <input className="order__input" type="text" placeholder="ФИО" name="fio">
+    const container = createElement('div', {
+        className: 'container',
+        innerHTML: '<h2 class="order__title">Оформление заказа</h2>',
+    }, {
+        parent: order,
+    });
+
+    const orderForm = createElement('form', {
+        className: 'order__form',
+    }, {
+        parent: container,
+        cb(form) {
+            //function submit deal
+        }
+    });
+
+    orderForm.insertAdjacentHTML('beforeend', `
+        <fieldset class="order__personal">
+            <label class="order__label">
+                <input class="order__input" type="text" placeholder="ФИО" name="fio" required>
             </label>
-
-            <label className="order__label">
-                <input className="order__input" type="text" placeholder="Адрес доставки" name="address">
+    
+            <label class="order__label">
+                <input class="order__input" type="text" placeholder="Адрес доставки" name="address">
             </label>
-
-            <label className="order__label">
-                <input className="order__input" type="text" placeholder="Телефон" name="phone">
+    
+            <label class="order__label">
+                <input class="order__input" type="text" placeholder="Телефон" name="phone" required>
             </label>
-
-            <label className="order__label">
-                <input className="order__input" type="text" placeholder="E-mail" name="email">
+    
+            <label class="order__label">
+                <input class="order__input" type="text" placeholder="E-mail" name="email">
             </label>
         </fieldset>
 
-        <fieldset className="order__radio-list">
-            <label className="order__radio radio">
-                <input className="radio__input" type="radio" name="delivery" value="delivery">
-                    <span className="radio__text">Доставка</span>
+        <fieldset class="order__radio-list">
+            <label class="order__radio radio">
+                <input class="radio__input" type="radio" name="delivery" value="delivery" required>
+                    <span class="radio__text">Доставка</span>
             </label>
 
-            <label className="order__radio radio">
-                <input className="radio__input" type="radio" name="delivery" value="pick-up">
-                    <span className="radio__text">Самовывоз</span>
+            <label class="order__radio radio">
+                <input class="radio__input" type="radio" name="delivery" value="pick-up" required>
+                    <span class="radio__text">Самовывоз</span>
             </label>
         </fieldset>
 
-        <button className="order__submit main-button" type="submit">Оформить</button>
-    </form>
-</div>*/
+        <button class="order__submit main-button" type="submit">Оформить</button>
+    `);
+}

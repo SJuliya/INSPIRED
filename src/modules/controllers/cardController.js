@@ -17,9 +17,9 @@ export const cardController = async (routerData) => {
     renderHero({render: false});
     renderCard({data, render: true});
     renderProducts({title: 'Вам также может понравиться', params: {count: 4, gender}, render: true})
-/*        .then(() => {
+        .then(() => {
             document.getElementById('order').scrollIntoView({ behavior: 'smooth', block: 'start' })
-        });*/
+        });
     renderCart({render: false});
     renderOrder({render: false});
 }

@@ -1,8 +1,8 @@
-import {API_URL, card, DATA} from "../const";
+import {API_URL, card, cart, DATA} from "../const";
 import {createElement} from "../utils/createElement";
 import {renderCount} from "./renderCount";
 import {getFavorite, handlerFavorite} from "../controllers/favoriteController";
-import {addProductCart} from "../controllers/cartController";
+import {addProductCart, calcTotalPrice} from "../controllers/cartController";
 
 export const renderCard = ({data, render}) => {
     card.textContent = '';
@@ -40,6 +40,7 @@ export const renderCard = ({data, render}) => {
 
                 if (product.color && product.size && product.count) {
                     addProductCart(product);
+                    calcTotalPrice.updateCount();
                     return;
                 }
 

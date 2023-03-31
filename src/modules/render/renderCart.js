@@ -7,8 +7,11 @@ export const renderCart = ({render, cartGoodsStore}) => {
     cart.textContent = '';
 
     if (!render) {
+        cart.style.display = 'none';
         return;
     }
+
+    cart.style.display = 'block';
 
     const container = createElement('div', {
         className: 'container',
@@ -39,7 +42,9 @@ export const renderCart = ({render, cartGoodsStore}) => {
         })
 
         article.insertAdjacentHTML('beforeend', `
-            <img class="item__image" src="${API_URL}/${data.pic}" alt="${data.title}">
+            <a href="#/product/${data.id}">
+                <img class="item__image" src="${API_URL}/${data.pic}" alt="${data.title}">
+            </a>
 
             <div class="item__content">
                 <h3 class="item__title">${data.title}</h3>
@@ -75,7 +80,8 @@ export const renderCart = ({render, cartGoodsStore}) => {
                      const isRemove = removeCart(product);
                      if (isRemove) {
                          li.remove();
-                         calcTotalPrice.update();
+                         calcTotalPrice.updateTotalPrice();
+                         calcTotalPrice.updateCount();
                      }
                 })
             }
@@ -84,7 +90,8 @@ export const renderCart = ({render, cartGoodsStore}) => {
         const countBlock = renderCount(product.count, 'item__count', count => {
             product.count = count;
             addProductCart(product, true);
-            calcTotalPrice.update();
+            calcTotalPrice.updateTotalPrice();
+            calcTotalPrice.updateCount();
         });
 
         article.insertAdjacentElement('beforeend', countBlock);
@@ -104,7 +111,7 @@ export const renderCart = ({render, cartGoodsStore}) => {
         parent: cartTotal,
         append: createElement('span', {}, {
             cb(elem) {
-                calcTotalPrice.update(elem);
+                calcTotalPrice.updateTotalPrice(elem);
                 calcTotalPrice.writeTotal(elem);
             },
         })
